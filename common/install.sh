@@ -329,26 +329,24 @@ if [[ -f $CONFIG_FILE ]]; then
 	IS_REINSTALL=1
 fi
 
-if [[ $VW_PACKAGE == "cromite" ]]; then
-	download_file webview.apk $VW_APK_URL
-	su -c pm install --install-location 1 webview.apk  >&2
-else
-	if [[ $VW_PACKAGE == "us.spotco.mulch_wv" ]]; then
-		ui_print ""
-		ui_print "  Do you want this module to download and install the latest Mulch webview as a system app?"
-		ui_print ""
-		ui_print "  [Vol+ = Yes, download and install]"
-		ui_print "  [Vol- = No, minimal setup for manual installation]"
-		if ! chooseport 5; then
-			IS_MINIMAL_INSTALLATION=1
-		fi
+if [[ $VW_PACKAGE == "us.spotco.mulch_wv" ]]; then
+	ui_print ""
+	ui_print "  Do you want this module to download and install the latest Mulch webview as a system app?"
+	ui_print ""
+	ui_print "  [Vol+ = Yes, download and install]"
+	ui_print "  [Vol- = No, minimal setup for manual installation]"
+	if ! chooseport 5; then
+		IS_MINIMAL_INSTALLATION=1
 	fi
+fi
 
-	if [[ $IS_MINIMAL_INSTALLATION -eq 0 ]]; then
-		ui_print "  CPU architecture: ${ARCH}"
-		download_install_webview
-	fi
+if [[ $IS_MINIMAL_INSTALLATION -eq 0 ]]; then
+	ui_print "  CPU architecture: ${ARCH}"
+	download_install_webview
+fi
 
+# Only create overlay if the webview supports it
+if [[ ! -z $OVERLAY_ZIP_FILE ]]; then
 	create_overlay
 	if [[ ! -f "$MODPATH"/unsigned.apk ]]; then
 		ui_print ""
