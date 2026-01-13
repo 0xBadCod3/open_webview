@@ -4,6 +4,7 @@
 # v2.5.2
 
 - Prevent post-fs logic if Cromite is choosen as webview
+- Fix cromite download link
 
 # v2.5.1
 
